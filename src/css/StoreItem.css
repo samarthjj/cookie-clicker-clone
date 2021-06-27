@@ -1,0 +1,36 @@
+:root {
+    --shadow-color: #99d98c;
+    --item-color: #b5e48c;
+}
+
+.store-item {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid black;
+    background: var(--item-color);
+    transition: box-shadow 500ms;
+}
+
+.store-item:hover {
+    box-shadow: 0 100px var(--shadow-color) inset;
+}
+
+.store-item:first-child {
+    border-top: 1px solid black;
+}
+
+.item-name {
+    font-size: 1.5rem;
+    text-transform: capitalize;
+}
+
+.item-price {
+    font-size: 1.2rem;
+}
+
+.item-count {
+    font-size: 2rem;
+}

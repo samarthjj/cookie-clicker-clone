@@ -1,28 +1,17 @@
 import { useDispatch, useSelector, connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as Action from '../actionTypes';
 import '../css/Cookie.css';
 
-let timer = null;
-
-const start = () => (dispatch) => {
-    clearInterval(timer);
-    timer = setInterval(() => dispatch(tick()), 1000);
-}
-
-const tick = () => {
-    return { type: Action.AUTO_INCREMENT, payload: {} }   
-}
-
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     return {
         cookies: state.cookies,
         cookieProductionRate: state.cookieProductionRate
     }
 }
 
-function Cookie(props) {
+const Cookie = (props) => {
     const dispatch = useDispatch()
     const [bakeryName, setBakeryName] = useState(useSelector(state => state.bakeryName))
     const [show, setShow] = useState(false)
@@ -51,10 +40,6 @@ function Cookie(props) {
     const handleRandomName = () => {
         setinputBakeryName( `${getRandomName()}'s bakery` )
     }
-
-    useEffect(() => {
-        start()(dispatch);
-    }, []);
 
     return (
         <>

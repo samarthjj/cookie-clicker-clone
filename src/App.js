@@ -29,6 +29,7 @@ const stop = () => {
 
 const loadSave = (dispatch) => {
   const bakeryName = localStorage.getItem("bakeryName");
+  const leaveTime = parseInt(localStorage.getItem("leaveTime"));
 
   if (bakeryName === undefined || bakeryName === null) return;
 
@@ -52,6 +53,16 @@ const loadSave = (dispatch) => {
       cookieProductionRate,
       store: cookieStore
     }
+  });
+
+  if (isNaN(leaveTime)) return;
+  
+  const currentTime = new Date().getTime();
+  const difference = currentTime - leaveTime;
+  const cookiesToAdd = cookieProductionRate * difference;
+  dispatch({
+    type: Action.ADD_COOKIES,
+    payload: cookiesToAdd
   })
 }
 
@@ -69,6 +80,10 @@ const autosave = () => {
 }
 
 const App = () => {
+  useBeforeunload(() => {
+    localStorage.setItem("leaveTime", new Date().getTime())
+  });
+
   store = useStore();
   const dispatch = useDispatch()
 

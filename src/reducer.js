@@ -138,6 +138,12 @@ const reducer = (state = initialState, action) => {
                 }
             }
 
+        case Action.ADD_COOKIES:
+            return {
+                ...state,
+                cookies: state.cookies + action.payload
+            }
+
         default:
             return state;
     }

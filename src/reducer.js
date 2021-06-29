@@ -127,6 +127,17 @@ const reducer = (state = initialState, action) => {
                 }
             }
 
+        case Action.LOAD_SAVE:
+            return {
+                ...state,
+                bakeryName: action.payload.bakeryName,
+                cookies: action.payload.cookies,
+                cookieProductionRate: action.payload.cookieProductionRate,
+                store: {
+                    ...action.payload.store
+                }
+            }
+
         default:
             return state;
     }

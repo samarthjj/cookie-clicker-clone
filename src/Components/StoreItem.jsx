@@ -2,7 +2,7 @@ import { useDispatch, connect } from 'react-redux';
 import '../css/StoreItem.css';
 import * as Action from '../actionTypes';
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     return {
         store: state.store,
         cookies: state.cookies,
@@ -11,7 +11,7 @@ function mapStateToProps(state) {
     }
 }
 
-function StoreItem(props) {
+const StoreItem = (props) => {
     const name = props.name;
     const displayName = props.store[name].name;
     const price = props.store[name].price;

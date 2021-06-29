@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import '../css/Store.css';
 
 
-export default function Store() {
+const Store = () => {
     const storeItems = useSelector( (state) => state.store );
 
     return(
@@ -18,3 +18,5 @@ export default function Store() {
         </div>
     );
 }
+
+export default Store;

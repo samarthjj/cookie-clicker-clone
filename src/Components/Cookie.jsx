@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
     return {
         cookies: state.cookies,
         cookieProductionRate: state.cookieProductionRate,
-        getReadablePrice: state.getReadablePrice
+        getReadablePrice: state.getReadablePrice,
+        bakeryName: state.bakeryName
     }
 }
 

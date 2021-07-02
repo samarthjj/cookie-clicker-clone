@@ -49,8 +49,8 @@ const format = (numCookies) => {
 
 const initialState = {
     bakeryName: `${faker.animal.dog()}'s bakery`,
-    cookies: 10000000000000,
-    cookieProductionRate: 1000000000000,
+    cookies: 0,
+    cookieProductionRate: 0,
     store: {
         cursor: {
             name: "cursor",

@@ -1,8 +1,9 @@
 import { useDispatch, useStore } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Cookie from './Components/Cookie';
 import Store from './Components/Store';
-import { useBeforeunload } from 'react-beforeunload';
+import Upgrades from './Components/Upgrades';
+import { motion } from 'framer-motion';
 import * as Action from './actionTypes';
 import './css/App.css';
 
@@ -11,81 +12,111 @@ let autosaveTimer = null;
 let store = null;
 const ONE_SECOND = 1000;
 
-const start = () => (dispatch) => {
-    clearInterval(timer);
-    clearInterval(autosaveTimer);
-    timer = setInterval(() => dispatch(tick()), ONE_SECOND);
-    autosaveTimer = setInterval(() => autosave(), 30 * ONE_SECOND);
-}
+const App = () => {
+  store = useStore();
+  const dispatch = useDispatch()
 
-const tick = () => {
-    return { type: Action.AUTO_INCREMENT, payload: {} }   
-}
+  const [gameSaved, setGameSaved] = useState(false);
 
-const stop = () => {
-    clearInterval(timer);
-    clearInterval(autosaveTimer);
-}
-
-const loadSave = (dispatch) => {
-  const bakeryName = localStorage.getItem("bakeryName");
-  const leaveTime = parseInt(localStorage.getItem("leaveTime"));
-
-  if (bakeryName === undefined || bakeryName === null) return;
-
-  const cookies = parseInt(localStorage.getItem("cookies"));
-  const cookieProductionRate = parseFloat(localStorage.getItem("cookieProductionRate"));
-  let cookieStore = {};
-  
-  try {
-    cookieStore = JSON.parse(localStorage.getItem("store"));
-  
-  } catch(error) {
-    console.log(error, cookieStore);
-    return;
-  }
-
-  dispatch({
-    type: Action.LOAD_SAVE,
-    payload: {
-      bakeryName,
-      cookies,
-      cookieProductionRate,
-      store: cookieStore
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'visible') {
+      addAfkCookies(dispatch);
+    
+    } else {
+      localStorage.setItem("leaveTime", new Date().getTime());
     }
   });
 
-  if (isNaN(leaveTime)) return;
+  const addAfkCookies = (dispatch) => {
+    const leaveTime = localStorage.getItem("leaveTime");
+    const currentTime = new Date().getTime();
+    const afkTime = Math.floor((currentTime - leaveTime)/1000);
   
-  const currentTime = new Date().getTime();
-  const difference = currentTime - leaveTime;
-  const cookiesToAdd = cookieProductionRate * difference;
-  dispatch({
-    type: Action.ADD_COOKIES,
-    payload: cookiesToAdd
-  })
-}
+    const cookieProductionRate = store.getState().cookieProductionRate;
+    
+    if (localStorage.getItem("cookies") === null) return;
+  
+    const cookies = parseInt(localStorage.getItem("cookies"));
+    const cookiesToAdd = cookieProductionRate * afkTime;
+  
+    dispatch({
+      type: Action.SET_COOKIES,
+      payload: cookies + cookiesToAdd
+    })
+  }
 
-const autosave = () => {
-  const state = store.getState();
-  const bakeryName = state.bakeryName;
-  const cookies = state.cookies;
-  const cookieProductionRate = state.cookieProductionRate;
-  const cookieStore = state.store;
+  const start = () => (dispatch) => {
+    clearInterval(timer);
+    clearInterval(autosaveTimer);
+    timer = setInterval(() => dispatch(tick()), ONE_SECOND);
+    autosaveTimer = setInterval(() => autosave(), 60 * ONE_SECOND);
+  }
 
-  localStorage.setItem("bakeryName", bakeryName)
-  localStorage.setItem("cookies", cookies)
-  localStorage.setItem("cookieProductionRate", cookieProductionRate)
-  localStorage.setItem("store", JSON.stringify(cookieStore));
-}
+  const tick = () => {
+      return { type: Action.AUTO_INCREMENT, payload: {} }   
+  }
 
-const App = () => {
-  useBeforeunload(() => {
-    localStorage.setItem("leaveTime", new Date().getTime())
-  });
+  const stop = () => {
+      clearInterval(timer);
+      clearInterval(autosaveTimer);
+  }
 
-  store = useStore();
-  const dispatch = useDispatch()
+  const loadSave = (dispatch) => {
+    const bakeryName = localStorage.getItem("bakeryName");
+    const leaveTime = parseInt(localStorage.getItem("leaveTime"));
+
+    if (bakeryName === undefined || bakeryName === null) return;
+
+    const cookies = parseInt(localStorage.getItem("cookies"));
+    const cookieProductionRate = parseFloat(localStorage.getItem("cookieProductionRate"));
+    let cookieStore = {};
+    
+    try {
+      cookieStore = JSON.parse(localStorage.getItem("store"));
+    
+    } catch(error) {
+      console.log(error, cookieStore);
+      return;
+    }
+
+    dispatch({
+      type: Action.LOAD_SAVE,
+      payload: {
+        bakeryName,
+        cookies,
+        cookieProductionRate,
+        store: cookieStore
+      }
+    });
+
+    if (leaveTime === null) return;
+    
+    const currentTime = new Date().getTime();
+    const difference = Math.floor((currentTime - leaveTime)/1000);
+    const cookiesToAdd = cookieProductionRate * difference;
+
+    dispatch({
+      type: Action.ADD_COOKIES,
+      payload: cookiesToAdd
+    })
+  }
+
+  const autosave = () => {
+    const state = store.getState();
+    const bakeryName = state.bakeryName;
+    const cookies = state.cookies;
+    const cookieProductionRate = state.cookieProductionRate;
+    const cookieStore = state.store;
+
+    localStorage.setItem("bakeryName", bakeryName)
+    localStorage.setItem("cookies", cookies)
+    localStorage.setItem("cookieProductionRate", cookieProductionRate)
+    localStorage.setItem("store", JSON.stringify(cookieStore));
+
+    setGameSaved(true);
+    setTimeout(() => setGameSaved(false), 2 * ONE_SECOND)
+  }
+
 
   useEffect(() => {
     loadSave(dispatch);
@@ -94,12 +125,16 @@ const App = () => {
     return () => {
         stop();
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
       <Cookie />
+      <Upgrades />
       <Store />
+      {gameSaved && <motion.div className="tt" initial={{y: '110vh', x: 20}} animate={{y: `95vh`, x: 20}}>
+        Game Saved
+      </motion.div>}
     </div>
   );
 }

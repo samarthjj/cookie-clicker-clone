@@ -144,6 +144,18 @@ const reducer = (state = initialState, action) => {
                 cookies: state.cookies + action.payload
             }
 
+        case Action.CHANGE_BAKERY_NAME:
+            return {
+                ...state,
+                bakeryName: action.payload
+            }
+
+        case Action.SET_COOKIES:
+            return {
+                ...state,
+                cookies: action.payload
+            }
+
         default:
             return state;
     }

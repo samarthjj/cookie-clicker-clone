@@ -3,3 +3,5 @@ export const BUY_ITEM = 'BUY_ITEM';
 export const AUTO_INCREMENT = 'AUTO_INCREMENT';
 export const LOAD_SAVE = 'LOAD_STORE_DATA';
 export const ADD_COOKIES = 'ADD_COOKIES';
+export const CHANGE_BAKERY_NAME = 'CHANGE_BAKERY_NAME';
+export const SET_COOKIES = 'SET_COOKIES';

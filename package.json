@@ -9,6 +9,7 @@
     "approximate-number": "^2.1.0",
     "bootstrap": "^5.0.1",
     "faker": "^5.5.3",
+    "framer-motion": "^4.1.17",
     "react": "^17.0.2",
     "react-beforeunload": "^2.5.1",
     "react-bootstrap": "^1.6.1",

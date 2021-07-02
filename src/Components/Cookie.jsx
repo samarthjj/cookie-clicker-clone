@@ -3,32 +3,35 @@ import { Modal, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import * as Action from '../actionTypes';
 import '../css/Cookie.css';
+import { motion } from 'framer-motion';
 
 const mapStateToProps = (state) => {
     return {
         cookies: state.cookies,
-        cookieProductionRate: state.cookieProductionRate
+        cookieProductionRate: state.cookieProductionRate,
+        bakeryName: state.bakeryName
     }
 }
 
 const Cookie = (props) => {
     const dispatch = useDispatch()
-    const [bakeryName, setBakeryName] = useState(useSelector(state => state.bakeryName))
     const [show, setShow] = useState(false)
-    const [inputBakeryName, setinputBakeryName] = useState(bakeryName)
+    const [inputBakeryName, setinputBakeryName] = useState(props.bakeryName)
     const getRandomName = useSelector(state => state.getRandomName )
     const handleClose = () => {
-        setBakeryName(bakeryName)
-        setinputBakeryName(bakeryName)
+        setinputBakeryName(props.bakeryName)
         setShow(false)
     }
     const handleShow = () => {
-        setinputBakeryName(inputBakeryName)
+        setinputBakeryName(props.bakeryName)
         setShow(true)
     }
     const handleConfirmBakeryName = (event) => {
-        setBakeryName(inputBakeryName)
         setShow(false)
+        dispatch({
+            type: Action.CHANGE_BAKERY_NAME,
+            payload: inputBakeryName
+        });
     }
     const handleBakeryNameChange = (event) => setinputBakeryName(event.target.value)
     const handleCookieClick = () => {
@@ -61,14 +64,20 @@ const Cookie = (props) => {
 
             <div className="cookie-column">
                 <div className="bakery-info">
-                    <div className="bakery-name" onClick={handleShow}>{bakeryName}</div>
+                    <div className="bakery-name" onClick={handleShow}>{props.bakeryName}</div>
                     <div className="cookie-info">
                         <div className="cookie-count">{Math.floor(props.cookies)} cookies</div>
                         <div className="cookie-rate">per second: {props.cookieProductionRate}</div>
                     </div>
                 </div>
 
-                <div id="cookie" onClick={handleCookieClick}></div>
+                <motion.div 
+                    whileHover={{scale: 1.1}}
+                    whileTap={{scale: 1.2 }}
+                    transition={{type: 'spring', duration: 0}}
+                    id="cookie"
+                    onClick={handleCookieClick}
+                ></motion.div>
             </div>
         </>
     );

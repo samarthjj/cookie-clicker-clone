@@ -7,7 +7,8 @@ import '../css/Cookie.css';
 const mapStateToProps = (state) => {
     return {
         cookies: state.cookies,
-        cookieProductionRate: state.cookieProductionRate
+        cookieProductionRate: state.cookieProductionRate,
+        getReadablePrice: state.getReadablePrice
     }
 }
 
@@ -63,8 +64,9 @@ const Cookie = (props) => {
                 <div className="bakery-info">
                     <div className="bakery-name" onClick={handleShow}>{bakeryName}</div>
                     <div className="cookie-info">
-                        <div className="cookie-count">{Math.floor(props.cookies)} cookies</div>
-                        <div className="cookie-rate">per second: {props.cookieProductionRate}</div>
+                        <div className="cookie-count">{props.getReadablePrice(props.cookies)} cookies</div>
+                        <div className="cookie-rate">per second: {props.getReadablePrice(
+                        props.cookieProductionRate)}</div>
                     </div>
                 </div>
 

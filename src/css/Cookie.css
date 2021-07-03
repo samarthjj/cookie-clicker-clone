@@ -2,8 +2,6 @@
     background: cyan;
     background-image: url('../images/bg.png');
     background-position: center;
-    border-right: 5px solid black;
-    flex: 1;
     display: flex;
     height: 100vh;
     align-items: center;
@@ -64,3 +62,9 @@
     transform: scale(1.2);
 }
 */
+
+@media only screen and (min-width: 720px) {
+    .cookie-column {
+        flex: 1;
+    }
+}

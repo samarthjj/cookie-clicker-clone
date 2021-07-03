@@ -49,7 +49,7 @@ const App = () => {
     clearInterval(timer);
     clearInterval(autosaveTimer);
     timer = setInterval(() => dispatch(tick()), ONE_SECOND);
-    autosaveTimer = setInterval(() => autosave(), 60 * ONE_SECOND);
+    autosaveTimer = setInterval(() => save(), 60 * ONE_SECOND);
   }
 
   const tick = () => {
@@ -101,7 +101,7 @@ const App = () => {
     })
   }
 
-  const autosave = () => {
+  const save = () => {
     const state = store.getState();
     const bakeryName = state.bakeryName;
     const cookies = state.cookies;
@@ -113,10 +113,11 @@ const App = () => {
     localStorage.setItem("cookieProductionRate", cookieProductionRate)
     localStorage.setItem("store", JSON.stringify(cookieStore));
 
-    setGameSaved(true);
-    setTimeout(() => setGameSaved(false), 2 * ONE_SECOND)
+    if (!gameSaved) {
+      setGameSaved(true);
+      setTimeout(() => setGameSaved(false), 2 * ONE_SECOND)
+    }
   }
-
 
   useEffect(() => {
     loadSave(dispatch);
@@ -130,9 +131,9 @@ const App = () => {
   return (
     <div className="App">
       <Cookie />
-      <Upgrades />
+      <Upgrades saveGame={save} />
       <Store />
-      {gameSaved && <motion.div className="tt" initial={{y: '110vh', x: 20}} animate={{y: `95vh`, x: 20}}>
+      {gameSaved && <motion.div className="tt" initial={{y: '110vh', x: 10}} animate={{y: '92vh', x: 10}}>
         Game Saved
       </motion.div>}
     </div>

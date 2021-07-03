@@ -8,7 +8,7 @@ const Store = () => {
 
     return(
         <div className="store">
-            <div className="title">Store</div>
+            <h3 className="title">Store</h3>
 
             <div className="items">
                 {Object.keys(storeItems).map(

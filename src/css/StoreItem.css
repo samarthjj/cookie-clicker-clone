@@ -2,6 +2,10 @@
     --shadow-color: #99d98c;
     --item-color: #b5e48c;
 }
+.info {
+    display: flex;
+    text-align: center;
+}
 
 .store-item {
     padding: 1rem;
@@ -15,11 +19,18 @@
 }
 
 .store-item:hover {
-    box-shadow: 0 100px var(--shadow-color) inset;
+    box-shadow: 0 150px var(--shadow-color) inset;
 }
 
 .store-item:first-child {
     border-top: 1px solid black;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
 }
 
 .item-name {
@@ -33,4 +44,8 @@
 
 .item-count {
     font-size: 2rem;
+}
+
+.buy-sell-info {
+    margin-right: 1rem;
 }

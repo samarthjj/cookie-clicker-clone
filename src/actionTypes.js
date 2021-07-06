@@ -5,3 +5,4 @@ export const LOAD_SAVE = 'LOAD_STORE_DATA';
 export const ADD_COOKIES = 'ADD_COOKIES';
 export const CHANGE_BAKERY_NAME = 'CHANGE_BAKERY_NAME';
 export const SET_COOKIES = 'SET_COOKIES';
+export const SELL_ITEM = 'SELL_ITEM';

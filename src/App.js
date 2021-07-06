@@ -53,6 +53,8 @@ const App = () => {
   }
 
   const tick = () => {
+      const cookies = store.getState().cookies;
+      document.title = `${store.getState().getReadablePrice(cookies)} cookies - Cookie Clicker Clone`
       return { type: Action.AUTO_INCREMENT, payload: {} }   
   }
 

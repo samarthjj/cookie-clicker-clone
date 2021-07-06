@@ -55,6 +55,7 @@ const initialState = {
             name: "cursor",
             displayPrice: format(10),
             price: 10,
+			basePrice: 10,
             count: 0,
             productionIncrease: 0.1
         },
@@ -63,6 +64,7 @@ const initialState = {
             name: "grandma",
             displayPrice: format(100),
             price: 100,
+			basePrice: 100,
             count: 0,
             productionIncrease: 1
         },
@@ -71,6 +73,7 @@ const initialState = {
             name: "farm",
             displayPrice: format(1_100),
             price: 1_100,
+			basePrice: 1_100,
             count: 0,
             productionIncrease: 8
         },
@@ -79,6 +82,7 @@ const initialState = {
             name: "mine",
             displayPrice: format(12_000),
             price: 12_000,
+			basePrice: 12_000,
             count: 0,
             productionIncrease: 47
         },
@@ -87,6 +91,7 @@ const initialState = {
             name: "factory",
             displayPrice: format(130_000),
             price: 130_000,
+			basePrice: 130_000,
             count: 0,
             productionIncrease: 260
         },
@@ -95,6 +100,7 @@ const initialState = {
             name: "bank",
             displayPrice: format(1_400_000),
             price: 1_400_000,
+			basePrice: 1_400_000,
             count: 0,
             productionIncrease: 1_400
         },
@@ -103,6 +109,7 @@ const initialState = {
             name: "temple",
             displayPrice: format(20_000_000),
             price: 20_000_000,
+			basePrice: 20_000_000,
             count: 0,
             productionIncrease: 7_800
         },
@@ -111,6 +118,7 @@ const initialState = {
             name: "wizard tower",
             displayPrice: format(330_000_000),
             price: 330_000_000,
+			basePrice: 330_000_000,
             count: 0,
             productionIncrease: 44_000
         },
@@ -119,6 +127,7 @@ const initialState = {
             name: "shipment",
             displayPrice: format(5_100_000_000),
             price: 5_100_000_000,
+			basePrice: 5_100_000_000,
             count: 0,
             productionIncrease: 260_000
         },
@@ -127,15 +136,19 @@ const initialState = {
             name: "alchemy lab",
             displayPrice: format(75_000_000_000),
             price: 75_000_000_000,
+			basePrice: 75_000_000_000,
             count: 0,
             productionIncrease: 1_600_000
         }
 
         
     },
-    updatePrice: (price) => {
-        return Math.ceil(price * 1.15)
-    },
+    getUpdatedPrice: (price) => price * 1.15,
+
+    getPrice10: (price) => price * 20.303718238,
+
+    getPrice100: (price) => price * 7828749.671335256,
+
     getRandomName: () => faker.animal.dog(),
 
     getReadablePrice: (price) => format(price)
@@ -159,7 +172,7 @@ const reducer = (state = initialState, action) => {
             const updatedItemName = action.payload.itemInfo.name;
             const updatedItem = {};
             updatedItem[updatedItemName] = action.payload.itemInfo;
-            const additionalProductionRate = action.payload.itemInfo.productionIncrease;
+            const additionalProductionRate = action.payload.additionalProductionIncrease;
             return {
                 ...state,
                 cookies: action.payload.cookies,
@@ -198,6 +211,22 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 cookies: action.payload
             }
+
+        case Action.SELL_ITEM: {
+            const soldItemName = action.payload.itemInfo.name;
+            const updatedSoldItem = {};
+            updatedSoldItem[soldItemName] = action.payload.itemInfo;
+            return {
+                ...state,
+                cookies: action.payload.cookies,
+                cookieProductionRate: ((state.cookieProductionRate*1e7) - (action.payload.productionDecrease*1e7)) / 1e7,
+                store: {
+                    ...state.store,
+                    ...updatedSoldItem
+
+                }
+            }
+        }
 
         default:
             return state;

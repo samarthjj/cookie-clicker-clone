@@ -1,7 +1,6 @@
 import * as Action from './actionTypes';
 
 const faker = require('faker');
-// const approx = require('approximate-number');
 const format = (numCookies) => {
     let cookies = Math.floor(numCookies).toString()
     const length = cookies.length

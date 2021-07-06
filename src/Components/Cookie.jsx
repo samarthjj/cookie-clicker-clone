@@ -67,7 +67,7 @@ const Cookie = (props) => {
                 <div className="bakery-info">
                     <div className="bakery-name" onClick={handleShow}>{props.bakeryName}</div>
                     <div className="cookie-info">
-                        <div className="cookie-count">{props.getReadablePrice(props.cookies)} cookies</div>
+                        <h2 className="cookie-count">{props.getReadablePrice(props.cookies)} cookies</h2>
                         <div className="cookie-rate">per second: {props.getReadablePrice(
                         props.cookieProductionRate)}</div>
                     </div>
